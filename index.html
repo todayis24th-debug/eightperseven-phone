@@ -1,39 +1,379 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/animations.css">
-    <title>eightperseven</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>eightperseven</title>
+<style>
+:root{--accent:#d9c7f0;--wallpaper:linear-gradient(145deg,#eadff5,#f9e9e9,#dce9f5);--ink:#24232b}
+*{box-sizing:border-box}
+body{margin:0;background:#f5f3f7;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+header{padding:22px 18px;text-align:center;background:white;border-bottom:1px solid #eee}
+header h1{margin:0;font-size:23px;letter-spacing:3px}
+header p{margin:5px 0 0;font-size:12px;color:#89858f}
+main{max-width:1000px;margin:auto;padding:20px;display:grid;grid-template-columns:minmax(280px,350px) minmax(0,1fr);gap:25px;align-items:start}
+.phone-wrap{position:sticky;top:12px}
+.phone{width:100%;max-width:330px;margin:auto;background:#17171b;border:5px solid #17171b;border-radius:43px;padding:8px;box-shadow:0 18px 45px #33294430;overflow:hidden}
+.screen{height:650px;max-height:72vh;min-height:490px;border-radius:33px;overflow:hidden;position:relative;background:var(--wallpaper);background-size:cover;background-position:center}
+.island{position:absolute;z-index:5;top:9px;left:50%;transform:translateX(-50%);height:25px;width:94px;background:#101012;border-radius:20px}
+.status{position:absolute;top:12px;left:20px;right:20px;display:flex;justify-content:space-between;font-size:11px;font-weight:700;z-index:6}
+.view{display:none;position:absolute;inset:0;padding:48px 14px 14px;overflow:auto}
+.view.active{display:block}
+.lock{text-align:center;padding-top:48px;color:var(--ink)}
+.lock-date{font-size:14px;font-weight:600}
+.lock-time{font-size:68px;font-weight:300;letter-spacing:-4px;line-height:1.1}
+.lock-message{margin-top:22px;font-size:14px;white-space:pre-wrap}
+.unlock{position:absolute;bottom:17px;left:0;right:0;text-align:center;font-size:12px}
+.unlock button{border:0;border-radius:22px;padding:10px 17px;background:#ffffffa8}
+.home-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 8px;margin-top:60px}
+.app{border:0;background:transparent;color:inherit;text-align:center;padding:0;min-width:0}
+.app-icon{display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin:auto auto 5px;border-radius:14px;background:white;font-size:26px;box-shadow:0 3px 8px #0001}
+.app span:last-child{font-size:10px;overflow-wrap:anywhere}
+.dock{position:absolute;bottom:13px;left:12px;right:12px;border-radius:22px;background:#ffffff72;backdrop-filter:blur(15px);padding:10px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.dock button{border:0;background:transparent;font-size:26px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
+.topbar button,.soft-btn{border:0;border-radius:12px;padding:8px 11px;background:#eee8f5;color:#39313f}
+.panel-title{text-align:center;font-size:17px;font-weight:700;flex:1}
+.contact{text-align:center;padding:8px 0 16px}
+.avatar{width:62px;height:62px;border-radius:50%;object-fit:cover;background:#eee;margin:0 auto 7px;display:block}
+.bubble{max-width:84%;padding:10px 12px;border-radius:18px;margin:8px 0;font-size:13px;overflow-wrap:anywhere;white-space:pre-wrap}
+.bubble.left{background:#fff;margin-right:auto;border-bottom-left-radius:5px}
+.bubble.right{background:#a9d7a5;margin-left:auto;border-bottom-right-radius:5px}
+.bubble img{display:block;max-width:100%;border-radius:10px;margin-bottom:5px}
+.chat-list{padding-bottom:16px}
+.chat-compose{display:flex;gap:6px;position:sticky;bottom:0;background:#f5f3f7;padding:8px 0}
+.chat-compose input{min-width:0;flex:1;border:1px solid #ddd;border-radius:20px;padding:9px}
+.chat-compose button{border:0;border-radius:50%;width:38px;background:#9acb96}
+.card{background:#fff;border-radius:16px;padding:13px;margin-bottom:12px}
+.card img{max-width:100%;border-radius:10px}
+.note{width:100%;min-height:200px;border:0;resize:vertical;background:#fff8cc;border-radius:14px;padding:15px}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.photo-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:5px}
+.editor{background:white;border:1px solid #e9e5ed;border-radius:22px;padding:18px;min-width:0}
+.editor h2{font-size:20px;margin:0 0 5px}
+.muted{font-size:12px;color:#8b8790;line-height:1.6}
+.tabs{display:flex;gap:7px;overflow:auto;padding:12px 0}
+.tab{flex-shrink:0;border:0;border-radius:20px;background:#f1eef4;padding:9px 12px;font-size:12px}
+.tab.active{background:#29252f;color:white}
+.field{margin:13px 0}
+.field label{display:block;font-size:13px;font-weight:650;margin-bottom:6px}
+.field input:not([type=color]):not([type=file]):not([type=checkbox]),.field textarea,.field select{width:100%;border:1px solid #e2dee6;border-radius:11px;padding:11px;background:#fff}
+.field textarea{min-height:75px;resize:vertical}
+.field input[type=color]{width:100%;height:40px;border:0;background:transparent}
+.field input[type=file]{max-width:100%;font-size:12px}
+.row{display:flex;gap:10px}
+.row>*{min-width:0;flex:1}
+.primary{width:100%;border:0;border-radius:12px;padding:12px;background:#d9c7f0;font-weight:700}
+.danger{border:0;border-radius:10px;padding:7px 10px;background:#ffe6e6;color:#8c3232}
+.list-item{border:1px solid #eee;border-radius:12px;padding:10px;margin:8px 0;display:flex;align-items:center;gap:8px;font-size:13px}
+.list-item span{flex:1;overflow-wrap:anywhere}
+.list-item button{border:0;border-radius:8px;padding:6px 8px}
+.hidden{display:none!important}
+.small{font-size:11px;color:#888}
+@media(max-width:700px){main{grid-template-columns:1fr;padding:12px;gap:20px}.phone-wrap{position:relative;top:0}.phone{max-width:320px}.screen{height:620px;max-height:75vh}.editor{padding:15px}header{padding:18px}}
+</style>
 </head>
 <body>
-    <a href="lockscreen/lockscreen.html"><div class="powerBtn" onclick="ukljuci()"></div></a>
-    <div id="telefon">
-        <div id="island"></div>
-        <div id="ekran">
-            <div id="realTime" class="real-time">
-                
-            </div>
-            <div class="densa_strana">
-                <img src="img/signal.png" alt="">
-                <img src="img/wi-fi.png" alt="">
-                <img src="img/full-battery.png" alt="">
-            </div>
-            <div id="donjeIkonice">
-                <a href="poruke/poruke.html"><img src="img/iphone-message-computer-icons-text-messaging-messenger-93c1965b946804798a4d72bab8ef4b2f.png" alt="" class="donjaIkonica"></a>
-                <a href="poziv/poziv.html"><img src="img/dial icon.png" alt="" class="donjaIkonica" id="poziv"></a>
-                <a href="kalkulator/kalkulator.html"><img src="img/calc.png" alt="" class="donjaIkonica"></a>
-            </div>
-    
-        </div>
-    </div>
-    
-    
-    <script src="js/script.js"></script>
-    
+<header>
+<h1>eightperseven</h1>
+<p>your own little world ♡</p>
+</header>
+<main>
+<section class="phone-wrap">
+<div class="phone">
+<div class="screen" id="screen">
+<div class="island"></div>
+<div class="status"><span id="statusTime">9:41</span><span>● ▮▮ ▰</span></div>
+
+<div class="view active" id="lock">
+<div class="lock">
+<div class="lock-date" id="lockDate">Monday, October 24</div>
+<div class="lock-time" id="lockTime">09:41</div>
+<div class="lock-message" id="lockMessage">a little world of our own ♡</div>
+</div>
+<div class="unlock"><button onclick="showView('home')">↑ Tap to unlock</button></div>
+</div>
+
+<div class="view" id="home">
+<div class="home-grid" id="homeGrid"></div>
+<div class="dock" id="dock"></div>
+</div>
+
+<div class="view" id="messages">
+<div class="topbar"><button onclick="showView('home')">‹</button><div class="panel-title">Messages</div><button onclick="editTab('chat')">✎</button></div>
+<div class="contact"><img class="avatar" id="chatAvatar" alt="avatar"><b id="chatName">Someone</b><div class="small" id="chatSubtitle">iMessage</div></div>
+<div class="chat-list" id="chatList"></div>
+<div class="chat-compose"><input id="chatInput" placeholder="iMessage"><button onclick="sendMessage()">↑</button></div>
+</div>
+
+<div class="view" id="photos">
+<div class="topbar"><button onclick="showView('home')">‹</button><div class="panel-title">Photos</div><button onclick="editTab('photos')">✎</button></div>
+<div id="photoCaption" class="muted" style="margin-bottom:12px">your memories</div>
+<div class="photo-grid" id="photoGrid"></div>
+</div>
+
+<div class="view" id="notes">
+<div class="topbar"><button onclick="showView('home')">‹</button><div class="panel-title">Notes</div><button onclick="editTab('notes')">✎</button></div>
+<textarea class="note" id="notePreview" placeholder="Write your notes..."></textarea>
+<button class="primary" style="margin-top:10px" onclick="saveNote()">Save note</button>
+</div>
+
+<div class="view" id="social">
+<div class="topbar"><button onclick="showView('home')">‹</button><div class="panel-title" id="socialTitle">Social</div><button onclick="editTab('social')">✎</button></div>
+<div class="card"><b id="socialUser">@youraccount</b><p id="socialText">a little update from me ♡</p><img id="socialImage" class="hidden" alt="post image"><div class="muted">♡　♡　↗</div></div>
+</div>
+
+<div class="view" id="phoneApp">
+<div class="topbar"><button onclick="showView('home')">‹</button><div class="panel-title">Phone</div><button onclick="editTab('apps')">✎</button></div>
+<div class="card" style="text-align:center;padding:25px"><div style="font-size:38px">☎️</div><h3 id="phoneContact">My favorite person</h3><p class="muted">Phone simulator</p><button class="primary" onclick="alert('This is a visual phone simulator, not a real call.')">Call</button></div>
+</div>
+
+<div class="view" id="music">
+<div class="topbar"><button onclick="showView('home')">‹</button><div class="panel-title">Music</div><button onclick="editTab('apps')">✎</button></div>
+<div class="card" style="text-align:center;padding:25px"><div style="font-size:55px">🎧</div><h3 id="songTitle">Your favorite song</h3><p id="songArtist" class="muted">Your favorite artist</p><button class="primary" onclick="alert('Add a music link in the Editor to play your song.')">▶ Play</button></div>
+</div>
+
+<div class="view" id="settings">
+<div class="topbar"><button onclick="showView('home')">‹</button><div class="panel-title">Settings</div><button onclick="editTab('look')">✎</button></div>
+<div class="card"><b>eightperseven</b><p class="muted">Your phone, your rules.</p><button class="primary" onclick="editTab('look')">Customize appearance</button></div>
+<div class="card"><button class="primary" onclick="editTab('all')">Open Phone Editor</button></div>
+</div>
+</div>
+</div>
+<p class="muted" style="text-align:center">Tap the screen to explore ♡</p>
+</section>
+
+<section class="editor" id="editor">
+<h2>Phone Editor ✦</h2>
+<p class="muted">ปรับแต่งโทรศัพท์ของเธอได้ที่นี่ ข้อมูลจะบันทึกในเบราว์เซอร์นี้</p>
+<div class="tabs">
+<button class="tab active" data-tab="look">หน้าจอ</button>
+<button class="tab" data-tab="apps">แอป</button>
+<button class="tab" data-tab="chat">แชต</button>
+<button class="tab" data-tab="photos">รูปภาพ</button>
+<button class="tab" data-tab="social">โซเชียล</button>
+<button class="tab" data-tab="notes">โน้ต</button>
+</div>
+
+<div class="editor-page" id="tab-look">
+<div class="field"><label>ข้อความบน Lock Screen</label><textarea id="eLockMessage" placeholder="ข้อความที่อยากแสดง"></textarea></div>
+<div class="field"><label>วันที่บน Lock Screen</label><input id="eDate" placeholder="Monday, October 24"></div>
+<div class="field"><label>เวลา</label><input id="eTime" placeholder="09:41"></div>
+<div class="field"><label>สีพื้นหลัง</label><input type="color" id="eColor" value="#eadff5"></div>
+<div class="field"><label>รูปวอลเปเปอร์</label><input type="file" id="eWallpaper" accept="image/*"></div>
+<button class="primary" onclick="applyLook()">บันทึกหน้าจอ</button>
+</div>
+
+<div class="editor-page hidden" id="tab-apps">
+<div class="field"><label>ชื่อแอปในหน้า Home</label><p class="muted">แก้ชื่อและอีโมจิของแต่ละแอปได้</p></div>
+<div id="appEditor"></div>
+<div class="field"><label>ชื่อผู้ติดต่อใน Phone</label><input id="ePhoneContact" placeholder="My favorite person"></div>
+<div class="field"><label>ชื่อเพลง</label><input id="eSongTitle" placeholder="Your favorite song"></div>
+<div class="field"><label>ศิลปิน</label><input id="eSongArtist" placeholder="Your favorite artist"></div>
+<button class="primary" onclick="applyApps()">บันทึกแอป</button>
+</div>
+
+<div class="editor-page hidden" id="tab-chat">
+<div class="field"><label>ชื่อคนคุย</label><input id="eChatName" placeholder="ชื่อคนคุย"></div>
+<div class="field"><label>ข้อความใต้ชื่อ</label><input id="eChatSubtitle" placeholder="iMessage"></div>
+<div class="field"><label>รูปโปรไฟล์</label><input type="file" id="eAvatar" accept="image/*"></div>
+<div class="field"><label>ข้อความใหม่</label><textarea id="eNewMessage" placeholder="พิมพ์ข้อความที่ต้องการเพิ่ม"></textarea></div>
+<div class="row"><div class="field"><label>ฝั่งข้อความ</label><select id="eSide"><option value="left">ซ้าย — อีกคน</option><option value="right">ขวา — เรา</option></select></div><div class="field"><label>เวลา</label><input id="eMsgTime" placeholder="9:41 AM"></div></div>
+<div class="field"><label>แนบรูปในข้อความ (ถ้ามี)</label><input type="file" id="eChatImage" accept="image/*"></div>
+<button class="primary" onclick="addEditedMessage()">เพิ่มข้อความในแชต</button>
+<h3>ข้อความที่มีอยู่</h3><div id="messageEditor"></div>
+</div>
+
+<div class="editor-page hidden" id="tab-photos">
+<div class="field"><label>คำอธิบายหน้า Photos</label><input id="ePhotoCaption" placeholder="your memories"></div>
+<div class="field"><label>เพิ่มรูปจาก iPad</label><input type="file" id="ePhotos" accept="image/*" multiple></div>
+<button class="primary" onclick="addPhotos()">เพิ่มรูปภาพ</button>
+<div id="photoEditor"></div>
+</div>
+
+<div class="editor-page hidden" id="tab-social">
+<div class="field"><label>ชื่อแอปโซเชียล</label><input id="eSocialTitle" placeholder="Social"></div>
+<div class="field"><label>ชื่อบัญชี</label><input id="eSocialUser" placeholder="@youraccount"></div>
+<div class="field"><label>ข้อความโพสต์</label><textarea id="eSocialText" placeholder="เขียนโพสต์ของเธอ"></textarea></div>
+<div class="field"><label>รูปในโพสต์</label><input type="file" id="eSocialImage" accept="image/*"></div>
+<button class="primary" onclick="applySocial()">บันทึกโพสต์</button>
+</div>
+
+<div class="editor-page hidden" id="tab-notes">
+<div class="field"><label>เขียนโน้ต</label><textarea id="eNote" style="min-height:180px" placeholder="เขียนอะไรก็ได้..."></textarea></div>
+<button class="primary" onclick="saveNote()">บันทึกโน้ต</button>
+</div>
+<hr style="border:0;border-top:1px solid #eee;margin:20px 0">
+<button class="primary" onclick="exportData()">สำรองข้อมูลเป็นไฟล์ JSON</button>
+<p class="muted">รูปภาพจะถูกเก็บในเบราว์เซอร์ หากข้อมูลหรือรูปมีขนาดใหญ่เกินพื้นที่จัดเก็บ การบันทึกอาจไม่สำเร็จ ควรสำรองข้อมูลไว้เป็นระยะ</p>
+<button class="danger" onclick="resetData()">คืนค่าเริ่มต้นทั้งหมด</button>
+<p id="saveStatus" class="muted" aria-live="polite"></p>
+</section>
+</main>
+
+<script>
+const defaults={
+lockMessage:"a little world of our own ♡",
+date:"Monday, October 24",time:"09:41",color:"#eadff5",wallpaper:"",
+chatName:"Someone",chatSubtitle:"iMessage",avatar:"",
+messages:[
+{side:"left",text:"hey, are you awake? ♡",time:"9:40 AM",image:""},
+{side:"right",text:"for you, always.",time:"9:41 AM",image:""}
+],
+apps:[
+{id:"messages",name:"Messages",icon:"💬"},
+{id:"photos",name:"Photos",icon:"🌸"},
+{id:"phoneApp",name:"Phone",icon:"📞"},
+{id:"music",name:"Music",icon:"🎧"},
+{id:"social",name:"Social",icon:"📷"},
+{id:"notes",name:"Notes",icon:"📝"},
+{id:"settings",name:"Settings",icon:"⚙️"}
+],
+photos:[],photoCaption:"your memories",note:"",
+socialTitle:"Social",socialUser:"@youraccount",socialText:"a little update from me ♡",socialImage:"",
+phoneContact:"My favorite person",songTitle:"Your favorite song",songArtist:"Your favorite artist"
+};
+let data;
+try{data=JSON.parse(localStorage.getItem("eightperseven-data"))||structuredClone(defaults)}catch(e){data=JSON.parse(JSON.stringify(defaults))}
+function save(){
+ try{localStorage.setItem("eightperseven-data",JSON.stringify(data));document.getElementById("saveStatus").textContent="บันทึกแล้ว ♡"}
+ catch(e){document.getElementById("saveStatus").textContent="พื้นที่จัดเก็บเต็ม กรุณาลดจำนวนรูปภาพแล้วลองใหม่"}
+}
+function val(id){return document.getElementById(id).value}
+function setVal(id,v){document.getElementById(id).value=v??""}
+function imageURL(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(file)})}
+function showView(id){
+ document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+ const target=document.getElementById(id);if(target)target.classList.add("active");
+ if(id==="messages")renderMessages();
+ if(id==="photos")renderPhotos();
+ if(id==="notes")document.getElementById("notePreview").value=data.note;
+ if(id==="social")renderSocial();
+}
+function editTab(tab){document.getElementById("editor").scrollIntoView({behavior:"smooth"});selectTab(tab)}
+function selectTab(tab){
+ document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
+ document.querySelectorAll(".editor-page").forEach(p=>p.classList.toggle("hidden",p.id!=="tab-"+tab));
+}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>selectTab(b.dataset.tab)));
+function applyLook(){
+ data.lockMessage=val("eLockMessage");data.date=val("eDate");data.time=val("eTime");data.color=val("eColor");
+ const f=document.getElementById("eWallpaper").files[0];
+ const finish=()=>{save();render();};
+ if(f)imageURL(f).then(img=>{data.wallpaper=img;finish()}).catch(()=>{finish()});else finish();
+}
+function renderLook(){
+ document.getElementById("lockMessage").textContent=data.lockMessage;
+ document.getElementById("lockDate").textContent=data.date;
+ document.getElementById("lockTime").textContent=data.time;
+ document.getElementById("statusTime").textContent=data.time;
+ document.getElementById("screen").style.background=data.wallpaper?`url("${data.wallpaper}") center/cover`: `linear-gradient(145deg,${data.color},#f9e9e9,#dce9f5)`;
+ setVal("eLockMessage",data.lockMessage);setVal("eDate",data.date);setVal("eTime",data.time);setVal("eColor",data.color);
+}
+function renderApps(){
+ const grid=document.getElementById("homeGrid"),dock=document.getElementById("dock");grid.innerHTML="";dock.innerHTML="";
+ data.apps.forEach((a,i)=>{
+ const btn=document.createElement("button");btn.className="app";
+ btn.innerHTML=`<span class="app-icon"></span><span></span>`;
+ btn.children[0].textContent=a.icon;btn.children[1].textContent=a.name;
+ btn.onclick=()=>showView(a.id);grid.appendChild(btn);
+ if(i<4){const db=document.createElement("button");db.textContent=a.icon;db.title=a.name;db.onclick=()=>showView(a.id);dock.appendChild(db)}
+ });
+ const ae=document.getElementById("appEditor");ae.innerHTML="";
+ data.apps.forEach((a,i)=>{
+ const item=document.createElement("div");item.className="list-item";
+ const icon=document.createElement("input");icon.value=a.icon;icon.setAttribute("aria-label","App icon");icon.style.width="45px";
+ const name=document.createElement("input");name.value=a.name;name.setAttribute("aria-label","App name");name.style.flex="1";name.style.minWidth="0";
+ icon.onchange=()=>{data.apps[i].icon=icon.value;save();renderApps()};
+ name.onchange=()=>{data.apps[i].name=name.value;save();renderApps()};
+ item.append(icon,name);ae.appendChild(item);
+ });
+ setVal("ePhoneContact",data.phoneContact);setVal("eSongTitle",data.songTitle);setVal("eSongArtist",data.songArtist);
+ document.getElementById("phoneContact").textContent=data.phoneContact;
+ document.getElementById("songTitle").textContent=data.songTitle;
+ document.getElementById("songArtist").textContent=data.songArtist;
+}
+function applyApps(){data.phoneContact=val("ePhoneContact");data.songTitle=val("eSongTitle");data.songArtist=val("eSongArtist");save();renderApps()}
+function renderMessages(){
+ document.getElementById("chatName").textContent=data.chatName;
+ document.getElementById("chatSubtitle").textContent=data.chatSubtitle;
+ const av=document.getElementById("chatAvatar");
+ av.src=data.avatar||"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100%25' height='100%25' fill='%23e6d9f2'/%3E%3Ctext x='50%25' y='58%25' font-size='40' text-anchor='middle'%3E%E2%99%A1%3C/text%3E%3C/svg%3E";
+ const list=document.getElementById("chatList");list.innerHTML="";
+ data.messages.forEach(m=>{
+ const b=document.createElement("div");b.className="bubble "+m.side;
+ if(m.image){const img=document.createElement("img");img.src=m.image;b.appendChild(img)}
+ if(m.text){const t=document.createElement("div");t.textContent=m.text;b.appendChild(t)}
+ const time=document.createElement("div");time.className="small";time.style.textAlign="right";time.textContent=m.time||"";b.appendChild(time);list.appendChild(b);
+ });
+ list.scrollTop=list.scrollHeight;
+ setVal("eChatName",data.chatName);setVal("eChatSubtitle",data.chatSubtitle);
+ renderMessageEditor();
+}
+function renderMessageEditor(){
+ const wrap=document.getElementById("messageEditor");wrap.innerHTML="";
+ data.messages.forEach((m,i)=>{
+ const item=document.createElement("div");item.className="list-item";
+ const label=document.createElement("span");label.textContent=(m.side==="left"?"ซ้าย: ":"ขวา: ")+(m.text||"📷 รูปภาพ");
+ const del=document.createElement("button");del.className="danger";del.textContent="ลบ";
+ del.onclick=()=>{data.messages.splice(i,1);save();renderMessages()};
+ item.append(label,del);wrap.appendChild(item);
+ });
+}
+async function addEditedMessage(){
+ const text=val("eNewMessage").trim(),file=document.getElementById("eChatImage").files[0];
+ if(!text&&!file){alert("ใส่ข้อความหรือเลือกรูปก่อนนะ");return}
+ let image="";if(file)image=await imageURL(file);
+ data.chatName=val("eChatName")||"Someone";data.chatSubtitle=val("eChatSubtitle")||"iMessage";
+ const avatar=document.getElementById("eAvatar").files[0];if(avatar)data.avatar=await imageURL(avatar);
+ data.messages.push({side:val("eSide"),text,time:val("eMsgTime")||"",image});
+ setVal("eNewMessage","");document.getElementById("eChatImage").value="";document.getElementById("eAvatar").value="";
+ save();renderMessages();
+}
+async function sendMessage(){
+ const input=document.getElementById("chatInput"),text=input.value.trim();if(!text)return;
+ data.messages.push({side:"right",text,time:data.time,image:""});input.value="";save();renderMessages();
+}
+function renderPhotos(){
+ document.getElementById("photoCaption").textContent=data.photoCaption;
+ const grid=document.getElementById("photoGrid");grid.innerHTML="";
+ data.photos.forEach((src,i)=>{const img=document.createElement("img");img.src=src;img.alt="Photo "+(i+1);grid.appendChild(img)});
+ setVal("ePhotoCaption",data.photoCaption);
+ const editor=document.getElementById("photoEditor");editor.innerHTML="";
+ data.photos.forEach((src,i)=>{const item=document.createElement("div");item.className="list-item";const img=document.createElement("img");img.src=src;img.style.width="42px";img.style.height="42px";img.style.objectFit="cover";const label=document.createElement("span");label.textContent="Photo "+(i+1);const del=document.createElement("button");del.className="danger";del.textContent="ลบ";del.onclick=()=>{data.photos.splice(i,1);save();renderPhotos()};item.append(img,label,del);editor.appendChild(item)});
+}
+async function addPhotos(){
+ data.photoCaption=val("ePhotoCaption")||"your memories";
+ const files=Array.from(document.getElementById("ePhotos").files);
+ for(const file of files){data.photos.push(await imageURL(file))}
+ document.getElementById("ePhotos").value="";save();renderPhotos();
+}
+function renderSocial(){
+ document.getElementById("socialTitle").textContent=data.socialTitle;
+ document.getElementById("socialUser").textContent=data.socialUser;
+ document.getElementById("socialText").textContent=data.socialText;
+ const img=document.getElementById("socialImage");img.classList.toggle("hidden",!data.socialImage);if(data.socialImage)img.src=data.socialImage;
+ setVal("eSocialTitle",data.socialTitle);setVal("eSocialUser",data.socialUser);setVal("eSocialText",data.socialText);
+}
+async function applySocial(){
+ data.socialTitle=val("eSocialTitle")||"Social";data.socialUser=val("eSocialUser")||"@youraccount";data.socialText=val("eSocialText");
+ const f=document.getElementById("eSocialImage").files[0];if(f)data.socialImage=await imageURL(f);
+ save();renderSocial();
+}
+function saveNote(){data.note=document.getElementById("notePreview").value||val("eNote");setVal("eNote",data.note);document.getElementById("notePreview").value=data.note;save()}
+function render(){
+ renderLook();renderApps();renderMessages();renderPhotos();renderSocial();
+ document.getElementById("notePreview").value=data.note;setVal("eNote",data.note);
+}
+function resetData(){if(!confirm("ต้องการคืนค่าเริ่มต้นและลบข้อมูลที่บันทึกไว้หรือไม่?"))return;data=JSON.parse(JSON.stringify(defaults));save();render()}
+function exportData(){
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="eightperseven-backup.json";a.click();URL.revokeObjectURL(url);
+}
+render();
+</script>
 </body>
 </html>
